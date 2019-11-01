@@ -1,0 +1,4 @@
+# English strings go here for Rails i18n
+ru:
+  # my_label: "My label"
+  permission_view_issue_history: Просматривать историю задачи
