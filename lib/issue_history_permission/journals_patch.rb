@@ -4,20 +4,14 @@ require_dependency 'user'
 module IssueHistoryPermission
   module JournalsPatch
     class SilentProxy
-      def initialize()
-        @collection = []
+      delegate :each, :to_a, to: '@empty'
+
+      def initialize
+        @empty = []
       end
 
       def method_missing(meth, *args, &blk)
         self
-      end
-
-      def each(&block)
-        @collection.each(&block)
-      end
-
-      def to_a
-        @collection
       end
     end
 
