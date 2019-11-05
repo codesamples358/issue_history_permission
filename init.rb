@@ -1,4 +1,12 @@
-require 'issue_history_permission/journals_patch'
+require 'issue_history_permission'
+
+ActiveSupport::Reloader.to_prepare do
+  paths = '/lib/issue_history_permission/{patches/*_patch,hooks/*_hook}.rb'
+
+  Dir.glob(File.dirname(__FILE__) + paths).each do |file|
+    require_dependency file
+  end
+end
 
 Redmine::Plugin.register :issue_history_permission do
   name 'Issue History Permission plugin'
