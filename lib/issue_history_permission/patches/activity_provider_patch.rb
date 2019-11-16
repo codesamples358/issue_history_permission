@@ -21,7 +21,14 @@ module IssueHistoryPermission
 
             p_options[:scope] = @__ish_default_activity_scope
 
-            if (ids = excluded_projects_ids).any?
+            forbidden_roles = Role.select {|role| !role.has_permission?(:view_issue_history)}.map(&:id)
+
+            ids = User.current.members.select do |member| 
+              all_roles_ids = member.member_roles.pluck(:role_id)
+              (all_roles_ids - forbidden_roles).empty?
+            end.map(&:project_id)
+
+            if ids.any?
               p_options[:scope] = p_options[:scope]
                 .where("project_id not in (?)", ids)
             end
